@@ -6,13 +6,15 @@ import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { toast } from "@/hooks/use-toast"
+import { toast } from "react-toastify"
 import { Calendar } from "@/components/ui/calendar"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 import { CreateUserSchema } from "@/src/schema"
+import { createUser } from "@/actions/create-user"
+import { useDialogStore } from "@/src/store"
 
 export function CreateForm() {
     const form = useForm<z.infer<typeof CreateUserSchema>>({
@@ -21,21 +23,16 @@ export function CreateForm() {
             name: "",
             ap_paterno: "",
             ap_materno: "",
-            fecha_nacimiento: undefined,
-            telefono: "",
+            birthday_date: undefined,
+            cellphone: "",
             email: "",
         },
     })
 
     function onSubmit(data: z.infer<typeof CreateUserSchema>) {
-        toast({
-            title: "Datos enviados:",
-            description: (
-                <pre className="mt-2 w-full rounded-md bg-slate-950 p-4">
-                    <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-                </pre>
-            ),
-        })
+        createUser(data)
+        useDialogStore.getState().closeDialog()
+        return toast.success("Usuario Agregado Correctamente")
     }
 
     return (
@@ -88,7 +85,7 @@ export function CreateForm() {
                 <div className="flex flex-col md:flex-row gap-4">
                     <FormField
                         control={form.control}
-                        name="fecha_nacimiento"
+                        name="birthday_date"
                         render={({ field }) => (
                             <FormItem className="flex-1">
                                 <FormLabel>Fecha de Nacimiento</FormLabel>
@@ -130,7 +127,7 @@ export function CreateForm() {
 
                     <FormField
                         control={form.control}
-                        name="telefono"
+                        name="cellphone"
                         render={({ field }) => (
                             <FormItem className="flex-1">
                                 <FormLabel>Teléfono</FormLabel>
@@ -158,7 +155,7 @@ export function CreateForm() {
                 </div>
 
                 <div className="flex justify-center">
-                    <Button type="submit">Enviar</Button>
+                    <Button type="submit" onClick={() => onSubmit}>Enviar</Button>
                 </div>
             </form>
         </Form>

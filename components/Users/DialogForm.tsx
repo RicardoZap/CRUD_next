@@ -2,21 +2,22 @@ import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { CreateForm } from "./CreateUser"
+import { useDialogStore } from "@/src/store"
 
 export function DialogForm() {
-    return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button variant="outline"><Plus />Agregar Usuario</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md lg:max-w-screen-md flex flex-col justify-between">
-                <DialogHeader>
-                    <DialogTitle>Nuevo Usario</DialogTitle>
-                </DialogHeader>
+  const { isOpen, openDialog, closeDialog } = useDialogStore()
 
-                <CreateForm />
-
-            </DialogContent>
-        </Dialog>
-    )
+  return (
+    <Dialog open={isOpen} onOpenChange={(open) => (open ? openDialog() : closeDialog())}>
+      <DialogTrigger asChild>
+        <Button className="bg-blue-500 hover:bg-blue-700 text-white" onClick={openDialog}><Plus />Agregar Usuario</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Nuevo Usuario</DialogTitle>
+        </DialogHeader>
+        <CreateForm />
+      </DialogContent>
+    </Dialog>
+  )
 }

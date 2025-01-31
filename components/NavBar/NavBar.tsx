@@ -5,7 +5,7 @@ import { Menu } from "lucide-react"
 
 export default function Navbar() {
   return (
-    <nav className="flex justify-between items-center p-4 border-b bg-white shadow-sm">
+    <nav className="flex justify-between items-center p-4 border-b bg-gray-500 shadow-sm text-white">
       <Sheet>
         <SheetTrigger className="md:hidden">
           <Menu className="w-6 h-6" />
@@ -27,7 +27,7 @@ export default function Navbar() {
         </SheetContent>
       </Sheet>
 
-      <div className="text-xl font-bold">Gestión de Usuarios</div>
+      <div className="text-xl font-semibold">Gestión de Usuarios</div>
 
       <NavigationMenu className="hidden md:flex">
         <NavigationMenuList className="flex space-x-6">
