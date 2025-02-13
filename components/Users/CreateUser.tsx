@@ -15,11 +15,24 @@ import { CalendarIcon } from "lucide-react"
 import { CreateUserSchema } from "@/src/schema"
 import { createUser } from "@/actions/create-user"
 import { useDialogStore } from "@/src/store"
+import { User } from "@prisma/client"
+import { updateUser } from "@/actions/update-user"
+import { mutate } from "swr"
+import { useState } from "react"
+import { es } from 'date-fns/locale' 
 
-export function CreateForm() {
+type CreateFormProps = {
+    user?: User | null
+    onClose?: () => void
+}
+  
+export function CreateForm({ user = null, onClose }: CreateFormProps) {
+    const [selectedUser, setSelectedUser] = useState<User | null>(user)
+    const [date, setDate] = useState<Date | undefined>()
+
     const form = useForm<z.infer<typeof CreateUserSchema>>({
         resolver: zodResolver(CreateUserSchema),
-        defaultValues: {
+        defaultValues: selectedUser || {
             name: "",
             ap_paterno: "",
             ap_materno: "",
@@ -29,15 +42,31 @@ export function CreateForm() {
         },
     })
 
-    function onSubmit(data: z.infer<typeof CreateUserSchema>) {
-        createUser(data)
+    function handleClose() {
+        form.reset()
+        setSelectedUser(null)
+        onClose && onClose()
+    }
+
+    async function onSubmit(data: z.infer<typeof CreateUserSchema>) {
+        if (user) {
+            await updateUser(user.id, data)
+            useDialogStore.getState().setUserUpdated(true)
+            mutate('/users/api')
+            toast.success("Usuario Editado Correctamente")
+        } else {
+            await createUser(data)
+            useDialogStore.getState().setUserCreated(true)
+            mutate('/users/api')
+            toast.success("Usuario Agregado Correctamente")
+        }
         useDialogStore.getState().closeDialog()
-        return toast.success("Usuario Agregado Correctamente")
+        handleClose()
     }
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col w-full space-y-6">
                 <div className="flex flex-col md:flex-row gap-4">
                     <FormField
                         control={form.control}
@@ -87,7 +116,7 @@ export function CreateForm() {
                         control={form.control}
                         name="birthday_date"
                         render={({ field }) => (
-                            <FormItem className="flex-1">
+                            <FormItem className="flex-2">
                                 <FormLabel>Fecha de Nacimiento</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -110,12 +139,17 @@ export function CreateForm() {
                                     </PopoverTrigger>
                                     <PopoverContent className="w-auto p-0" align="start">
                                         <Calendar
+                                            locale={es}
+                                            className="w-full"
+                                            fromYear={1980}
+                                            toYear={new Date().getFullYear()}
                                             mode="single"
                                             selected={field.value}
                                             onSelect={field.onChange}
                                             disabled={(date) =>
                                                 date > new Date() || date < new Date("1900-01-01")
                                             }
+                                            captionLayout="dropdown-buttons"
                                             initialFocus
                                         />
                                     </PopoverContent>
@@ -155,7 +189,7 @@ export function CreateForm() {
                 </div>
 
                 <div className="flex justify-center">
-                    <Button type="submit" onClick={() => onSubmit}>Enviar</Button>
+                    <Button type="submit" onClick={() => onSubmit}>{user ? "Actualizar" : "Enviar"}</Button>
                 </div>
             </form>
         </Form>

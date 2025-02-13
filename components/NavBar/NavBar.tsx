@@ -32,10 +32,10 @@ export default function Navbar() {
       <NavigationMenu className="hidden md:flex">
         <NavigationMenuList className="flex space-x-6">
           <NavigationMenuItem>
-            <NavigationMenuLink href="/" className="text-sm font-medium">Dashboard</NavigationMenuLink>
+            <NavigationMenuLink href="/dashboard" className="text-sm font-medium">Dashboard</NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <NavigationMenuLink href="/about" className="text-sm font-medium">Usuarios</NavigationMenuLink>
+            <NavigationMenuLink href="/users" className="text-sm font-medium">Usuarios</NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink href="/contact" className="text-sm font-medium">Contacto</NavigationMenuLink>

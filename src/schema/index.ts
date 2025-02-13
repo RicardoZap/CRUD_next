@@ -22,3 +22,16 @@ export const CreateUserSchema = z.object({
         message: "Ingresa un email válido",
     }),
 })
+
+export const CreateEnterpriseSchema = z.object({
+    name: z.string().min(3, {
+        message: "Ingrese un nombre válido"
+    }),
+    address: z.string().min(10, {
+        message: "Ingrese una dirección válida"
+    }),
+    cellphone: z.coerce.number().int().positive().min(1000000000).max(9999999999),
+    email: z.string().email({
+        message: "Ingresa un email válido"
+    })
+})

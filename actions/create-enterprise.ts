@@ -1,11 +1,11 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { CreateUserSchema } from "@/src/schema"
+import { CreateEnterpriseSchema } from "@/src/schema"
 import { z } from "zod"
 
-export async function createUser(data: z.infer<typeof CreateUserSchema>) {
-    const result = CreateUserSchema.safeParse(data)
+export async function createEnterprise(data: z.infer<typeof CreateEnterpriseSchema>) {
+    const result = CreateEnterpriseSchema.safeParse(data)
 
     if (!result.success) {
         return {
@@ -13,13 +13,13 @@ export async function createUser(data: z.infer<typeof CreateUserSchema>) {
         }
     }
 
+    console.log(result.data)
+
     try {
-        await prisma.user.create({
+        await prisma.enterprise.create({
             data: {
                 name: result.data.name,
-                ap_paterno: result.data.ap_paterno,
-                ap_materno: result.data.ap_materno,
-                birthday_date: result.data.birthday_date,
+                address: result.data.address,
                 cellphone: result.data.cellphone,
                 email: result.data.email
             }
@@ -28,3 +28,5 @@ export async function createUser(data: z.infer<typeof CreateUserSchema>) {
         console.log(error)
     }
 }
+
+
