@@ -21,6 +21,6 @@ model Enterprise {
   id        Int    @id @default(autoincrement())
   name      String
   address   String
-  cellphone Int
+  cellphone String
   email     String
 }

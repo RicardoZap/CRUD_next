@@ -10,13 +10,14 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { Building2 } from 'lucide-react';
+
 
 const items = [
     { title: "Dashboard", url: "/dashboard", icon: Home },
     { title: "Usuarios", url: "/users", icon: User2Icon },
     { title: "Empresas", url: "/enterprises", icon: WorkflowIcon },
-    { title: "Search", url: "#", icon: Search },
+    { title: "Asignaciones", url: "/assignment", icon: Search },
     { title: "Settings", url: "#", icon: Settings },
 ];
 
@@ -26,24 +27,16 @@ export function AppSidebar() {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton>
-                                    Select Workspace
-                                    <ChevronDown className="ml-auto" />
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                                <DropdownMenuItem><span>Acme Inc</span></DropdownMenuItem>
-                                <DropdownMenuItem><span>Acme Corp.</span></DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                        <div className="m-5 flex flex-row gap-2">
+                            <Building2></Building2>
+                            <p>Gestión Empresarial</p>
+                        </div>
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Application</SidebarGroupLabel>
+                    <SidebarGroupLabel>Menú Principal</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
                             {items.map((item) => (

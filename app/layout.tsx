@@ -7,6 +7,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import NavBarComponent from "@/components/NavBarComponent";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
+import { useEffect, useState } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,9 +44,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <SidebarTrigger />
               </NavBarComponent>
               <ScrollArea aria-orientation='horizontal'>
-                                {children}
-                                <ScrollBar orientation="horizontal" className="w-full" />
-                            </ScrollArea>
+                {children}
+                <ScrollBar orientation="horizontal" className="w-full" />
+              </ScrollArea>
             </main>
           </SidebarProvider>
           <ToastNotification />

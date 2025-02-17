@@ -2,51 +2,71 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CreateEnterpriseSchema } from "@/src/schema";
 import { createEnterprise } from "@/actions/create-enterprise";
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Enterprise } from "@prisma/client";
+import { updateEnterprise } from "@/actions/update-enterprise";
+import { CircleArrowLeft } from 'lucide-react';
 
-export default function EnterpriseForm() {
+type EnterpriseFormProps = {
+    data?: Enterprise
+}
+
+export default function EnterpriseForm({ data }: EnterpriseFormProps) {
     const router = useRouter()
+    const params = useParams()
+    const id = +params.id!
 
     const form = useForm<z.infer<typeof CreateEnterpriseSchema>>({
         resolver: zodResolver(CreateEnterpriseSchema),
         defaultValues: {
-            name: "",
-            address: "",
-            cellphone: 0,
-            email: ""
+            name: data?.name || "",
+            address: data?.address || "",
+            cellphone: data?.cellphone || "",
+            email: data?.email || ""
         }
     })
 
-    const formSchema = z.object({
-        name: z.string().min(2, "El nombre debe de tener al menos 2 caracteres"),
-        address: z.string().min(5, "La dirección es obligatoria"),
-        cellphone: z.string()
-            .min(10, "Debe tener al menos 10 dígitos")
-            .max(15, "Máximo 15 dígitos")
-            .regex(/^\d+$/, "Solo se permiten números"),
-        email: z.string().email("Email inválido")
-    });
-
     async function onSubmit(data: z.infer<typeof CreateEnterpriseSchema>) {
-        await createEnterprise(data)
-        toast.success("Usuario Agregado Correctamente")
+        if (id) {
+            const response = await updateEnterprise(id, data)
+            if (response?.errors) {
+                toast.error("Error al Actualizar la Empresa")
+                console.log(response.errors)
+                return
+            }
+            toast.success("Empresa Actualizada Correctamente")
+            router.push("/enterprises")
+        } else {
+            const response = await createEnterprise(data);
+            if (response?.errors) {
+                toast.error("Error al agregar la empresa")
+                console.error(response.errors)
+                return
+            }
+            toast.success("Empresa Agregada Correctamente")
+            router.push("/enterprises")
+        }
+    }
+
+    async function backPage() {
         router.push("/enterprises")
     }
 
     return (
         <div className="container p-5 w-full flex flex-col items-center">
-            <h1 className="text-3xl self-start">Nueva Empresa</h1>
+            <div className="flex flex-row justify-between items-center w-full">
+                <h1 className="text-3xl self-start">{data ? "Editar Empresa: " : "Nueva Empresa"} {data?.name}</h1>
+                <Button onClick={() => backPage()}><CircleArrowLeft></CircleArrowLeft>Regresar</Button>
+            </div>
 
             <Form {...form}>
-                <form className="space-y-4 mt-5 w-full" onSubmit={form.handleSubmit(onSubmit)}>
+                <form className="space-y-4 mt-5 w-full" onSubmit={form.handleSubmit(onSubmit)} noValidate>
                     <div className="flex flex-row gap-5">
                         <FormField
                             control={form.control}
@@ -110,7 +130,6 @@ export default function EnterpriseForm() {
                             />
                         </div>
                     </div>
-
                     <div className="flex justify-center w-full">
                         <Button type="submit" className="w-40 mt-5">Enviar</Button>
                     </div>

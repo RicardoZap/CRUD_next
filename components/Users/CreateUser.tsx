@@ -166,7 +166,7 @@ export function CreateForm({ user = null, onClose }: CreateFormProps) {
                             <FormItem className="flex-1">
                                 <FormLabel>Teléfono</FormLabel>
                                 <FormControl>
-                                    <Input type="number" placeholder="Ej. 5551234567" {...field} />
+                                    <Input maxLength={10} type="text" placeholder="Ej. 5551234567" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

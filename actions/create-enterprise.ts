@@ -1,19 +1,15 @@
-"use server"
+"use server";
 
-import prisma from "@/lib/prisma"
-import { CreateEnterpriseSchema } from "@/src/schema"
-import { z } from "zod"
+import prisma from "@/lib/prisma";
+import { CreateEnterpriseSchema } from "@/src/schema";
+import { z } from "zod";
 
 export async function createEnterprise(data: z.infer<typeof CreateEnterpriseSchema>) {
-    const result = CreateEnterpriseSchema.safeParse(data)
+    const result = CreateEnterpriseSchema.safeParse(data);
 
     if (!result.success) {
-        return {
-            errors: result.error.issues
-        }
+        return { errors: result.error.issues };
     }
-
-    console.log(result.data)
 
     try {
         await prisma.enterprise.create({
@@ -21,12 +17,13 @@ export async function createEnterprise(data: z.infer<typeof CreateEnterpriseSche
                 name: result.data.name,
                 address: result.data.address,
                 cellphone: result.data.cellphone,
-                email: result.data.email
-            }
-        })
+                email: result.data.email,
+            },
+        });
+
+        return { success: true };
     } catch (error) {
-        console.log(error)
+        console.error(error);
+        return { error: "Error en la base de datos" };
     }
 }
-
-

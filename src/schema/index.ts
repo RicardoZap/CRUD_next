@@ -15,9 +15,11 @@ export const CreateUserSchema = z.object({
     }, {
         message: "Ingresa una fecha válida",
     }),
-    cellphone: z.string().min(10, {
-        message: "Ingresa un teléfono válido",
-    }),
+    cellphone: z.string()
+        .min(10, {
+            message: "Ingresa un teléfono válido",
+        })
+        .regex(/^\d+$/, "Solo se permiten números"),
     email: z.string().email({
         message: "Ingresa un email válido",
     }),
@@ -30,7 +32,10 @@ export const CreateEnterpriseSchema = z.object({
     address: z.string().min(10, {
         message: "Ingrese una dirección válida"
     }),
-    cellphone: z.coerce.number().int().positive().min(1000000000).max(9999999999),
+    cellphone: z.string()
+        .min(10, "Debe tener al menos 10 dígitos")
+        .max(15, "Máximo 15 dígitos")
+        .regex(/^\d+$/, "Solo se permiten números"),
     email: z.string().email({
         message: "Ingresa un email válido"
     })

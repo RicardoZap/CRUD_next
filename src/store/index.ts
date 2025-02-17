@@ -1,5 +1,5 @@
 import { deleteUser } from "@/actions/delete-user"
-import { User } from "@prisma/client"
+import { Enterprise, User } from "@prisma/client"
 import { create } from "zustand"
 
 interface DialogState {
@@ -20,6 +20,11 @@ interface UserStore {
     users: User[]
     setUsers: (users: User[]) => void
     removeUser: (id: number) => void
+}
+
+interface EnterpriseStore {
+    enterprises: Enterprise[]
+    setEnterprises: (enterprise: Enterprise[]) => void
 }
 
 export const useDialogStore = create<DialogState>((set) => ({
@@ -53,3 +58,8 @@ export const useUserStore = create<UserStore>((set) => ({
         }
     },
 }));
+
+export const useEnterpriseStore = create<EnterpriseStore>((set) => ({
+    enterprises: [],
+    setEnterprises: (enterprises) => set({ enterprises})
+}))

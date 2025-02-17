@@ -4,6 +4,9 @@ import { DialogForm } from "@/components/Users/DialogForm";
 import TableComponent from "@/components/Users/TableComponent";
 import { useDialogStore, useUserStore } from "@/src/store";
 import { useEffect } from "react";
+import { useState, CSSProperties } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
+import LoaderComponent from "@/components/LoaderComponent";
 
 export default function UsersPage() {
   const url = '/users/api'
@@ -14,7 +17,6 @@ export default function UsersPage() {
     onSuccess: (data) => setUsers(data),
   })
 
-  //PENDIENTE EL RESFRESH AL AGREGAR USUARIO, AL ELIMINAR Y EDITAR FUNCIONA, FALTA AL AGREGAR
   const userCreated = useDialogStore((state) => state.userCreated)
   const setUserCreated = useDialogStore((state) => state.setUserCreated)
 
@@ -24,19 +26,24 @@ export default function UsersPage() {
   useEffect(() => {
     if (userUpdated || userCreated) {
         mutate(url).then((newData) => {
-            if (newData) setUsers(newData); // Asegurar que Zustand se actualice correctamente
-        });
+            if (newData) setUsers(newData)
+        })
         setUserUpdated(false)
         setUserCreated(false)
     }
 }, [userCreated, userUpdated])
 
 
-  if (isLoading) return <p>Cargando...</p>
+  if (isLoading) return <>
+    <div className="flex justify-center items-center h-screen w-full">
+      <LoaderComponent />
+    </div>
+  </>
+
 
   if (data) return (
-    <div className="container mx-5">
-      <h1 className="text-2xl font-semibold">Listado de Usuarios</h1>
+    <div className="flex flex-col container p-5">
+      <h1 className="text-3xl">Listado de Usuarios</h1>
       <TableComponent
         data={users || []}
       />
