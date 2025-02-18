@@ -40,3 +40,21 @@ export const CreateEnterpriseSchema = z.object({
         message: "Ingresa un email válido"
     })
 })
+
+export const CreateAssignmentSchema = z.object({
+    name: z.string().min(3, {
+        message: "Ingrese un cargo válido"
+    }),
+    userId: z.number().min(10, {
+        message: "Ingrese un usuario válido"
+    }),
+    enterpriseId: z.number().min(10, {
+        message: "Ingrese una empresa válida"
+    })
+})
+
+export const CreateRolSchema = z.object({
+    rol_name: z.string().min(3, {
+        message: "Ingrese un Rol válido"
+    })
+})

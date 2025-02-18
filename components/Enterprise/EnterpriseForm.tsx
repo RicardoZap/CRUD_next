@@ -5,12 +5,12 @@ import { z } from "zod"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CreateEnterpriseSchema } from "@/src/schema";
-import { createEnterprise } from "@/actions/create-enterprise";
+import { createEnterprise } from "@/actions/enterprise/create-enterprise";
 import { toast } from "react-toastify";
 import { useParams, useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Enterprise } from "@prisma/client";
-import { updateEnterprise } from "@/actions/update-enterprise";
+import { updateEnterprise } from "@/actions/enterprise/update-enterprise";
 import { CircleArrowLeft } from 'lucide-react';
 
 type EnterpriseFormProps = {

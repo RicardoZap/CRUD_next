@@ -1,5 +1,5 @@
-import { deleteUser } from "@/actions/delete-user"
-import { Enterprise, User } from "@prisma/client"
+import { deleteUser } from "@/actions/users/delete-user"
+import { Assignment, Enterprise, Rol, User } from "@prisma/client"
 import { create } from "zustand"
 
 interface DialogState {
@@ -25,6 +25,16 @@ interface UserStore {
 interface EnterpriseStore {
     enterprises: Enterprise[]
     setEnterprises: (enterprise: Enterprise[]) => void
+}
+
+interface AssignmentStore {
+    assignment: Assignment[]
+    setAssignment: (assingment: Assignment[]) => void
+}
+
+interface RolStore {
+    roles: Rol[]
+    setRol: (rol: Rol[]) => void
 }
 
 export const useDialogStore = create<DialogState>((set) => ({
@@ -62,4 +72,14 @@ export const useUserStore = create<UserStore>((set) => ({
 export const useEnterpriseStore = create<EnterpriseStore>((set) => ({
     enterprises: [],
     setEnterprises: (enterprises) => set({ enterprises})
+}))
+
+export const useAssignmentStore = create<AssignmentStore>((set) => ({
+    assignment: [],
+    setAssignment: (assignment) => set({ assignment })
+}))
+
+export const useRolStore = create<RolStore>((set) => ({
+    roles: [],
+    setRol: (roles) => set({ roles })
 }))

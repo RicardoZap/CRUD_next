@@ -1,4 +1,4 @@
-import { WorkflowIcon, Home, User2Icon, Search, Settings, ChevronDown } from "lucide-react";
+import { WorkflowIcon, Home, User2Icon, Search, Settings, UserCheck } from "lucide-react";
 import {
     Sidebar,
     SidebarContent,
@@ -17,8 +17,8 @@ const items = [
     { title: "Dashboard", url: "/dashboard", icon: Home },
     { title: "Usuarios", url: "/users", icon: User2Icon },
     { title: "Empresas", url: "/enterprises", icon: WorkflowIcon },
+    { title: "Roles", url: "/roles", icon: UserCheck },
     { title: "Asignaciones", url: "/assignment", icon: Search },
-    { title: "Settings", url: "#", icon: Settings },
 ];
 
 export function AppSidebar() {

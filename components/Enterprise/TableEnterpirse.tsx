@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Enterprise } from "@prisma/client";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
-import { deleteEnterprise } from "@/actions/delete-enterprises";
+import { deleteEnterprise } from "@/actions/enterprise/delete-enterprises";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { useSWRConfig } from "swr";
@@ -64,5 +64,5 @@ export default function TableEnterprise({ data }: TableComponentProps) {
                 </TableBody>
             </Table>
         </div>
-    );
+    )
 }

@@ -8,19 +8,39 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   name          String
   ap_paterno    String
   ap_materno    String
   birthday_date DateTime
   cellphone     String
   email         String
+  relation      Assignment[]
+}
+
+model Rol {
+  id      Int   @id @default(autoincrement())
+  rol_name  String
+  createdAt DateTime @default(now())
+  Assignment  Assignment[]
 }
 
 model Enterprise {
-  id        Int    @id @default(autoincrement())
+  id        Int          @id @default(autoincrement())
   name      String
   address   String
   cellphone String
   email     String
+  relation  Assignment[]
+}
+
+model Assignment {
+  id           Int        @id @default(autoincrement())
+  name         String
+  userId       Int
+  enterpriseId Int
+  rolId        Int
+  enterprise   Enterprise @relation(fields: [enterpriseId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+  rol          Rol        @relation(fields: [rolId], references: [id])
 }
