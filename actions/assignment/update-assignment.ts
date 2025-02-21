@@ -1,12 +1,16 @@
 "use server"
 
 import prisma from "@/lib/prisma"
-import { CreateRolSchema } from "@/src/schema"
+import { CreateAssignmentSchema } from "@/src/schema"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 
-export async function updateRol(id: number, data: z.infer<typeof CreateRolSchema>) {
-    const result = CreateRolSchema.safeParse(data)
+export async function updateAssignment(id: number, data: z.infer<typeof CreateAssignmentSchema>) {
+    const result = CreateAssignmentSchema.safeParse(data)
+    const { rolId, userId, enterpriseId } = data
+    const rol = Number(rolId)
+    const user = Number(userId)
+    const enterprise = Number(enterpriseId)
 
     if (!result.success) {
         return {
@@ -14,11 +18,15 @@ export async function updateRol(id: number, data: z.infer<typeof CreateRolSchema
         }
     }
 
-    await prisma.rol.update({
+    await prisma.assignment.update({
         where: {
             id
         },
-        data: result.data
+        data: {
+            rolId: rol,
+            enterpriseId: enterprise,
+            userId: user
+        }
     })
     revalidatePath('/enterprises')
 }

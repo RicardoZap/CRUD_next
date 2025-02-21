@@ -1,13 +1,27 @@
 "use client"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "../ui/button";
-import { Assignment } from "@prisma/client";
+import { AssignmentWithRelations } from "@/src/types";
+import { redirect } from "next/navigation";
+import { toast } from "react-toastify";
+import { mutate } from "swr";
+import { deleteAssignment } from "@/actions/assignment/delete-assignment";
 
 type TableAssignmentComponentProps = {
-  data: Assignment[]
+  data: AssignmentWithRelations[]
 }
 
-export default function TableAssignmentComponent({data} : TableAssignmentComponentProps) {
+function handleEdit(id: number) {
+  redirect(`/assignment/${id}/edit`)
+}
+
+async function handleDelete(id: number) {
+  await deleteAssignment(id)
+  toast.success("Asignación Eliminada Correctamente")
+  mutate("/assignment/api")
+}
+
+export default function TableAssignmentComponent({ data }: TableAssignmentComponentProps) {
   const relations = data
   return (
     <div className="w-full max-w-full my-8 shadow-lg rounded-lg">
@@ -22,14 +36,14 @@ export default function TableAssignmentComponent({data} : TableAssignmentCompone
         </TableHeader>
         <TableBody>
           {relations.length > 0 ? (
-            relations.map((enterprise) => (
-              <TableRow key={enterprise.id}>
-                <TableCell className="py-4">{enterprise.enterpriseId}</TableCell>
-                <TableCell className="py-4">{enterprise.name}</TableCell>
-                <TableCell className="py-4">{enterprise.userId}</TableCell>
+            relations.map((relation) => (
+              <TableRow key={relation.id}>
+                <TableCell className="py-4">{`${relation.user.name} ${relation.user.ap_paterno} ${relation.user.ap_materno}`}</TableCell>
+                <TableCell className="py-4">{relation.enterprise.name}</TableCell>
+                <TableCell className="py-4">{relation.rol.rol_name}</TableCell>
                 <TableCell className="flex space-x-2">
-                  <Button className="bg-yellow-500 hover:bg-yellow-600">Editar</Button>
-                  <Button variant="destructive">Eliminar</Button>
+                  <Button className="bg-yellow-500 hover:bg-yellow-600" onClick={() => handleEdit(relation.id)}>Editar</Button>
+                  <Button variant="destructive" onClick={() => handleDelete(relation.id)}>Eliminar</Button>
                 </TableCell>
               </TableRow>
             ))

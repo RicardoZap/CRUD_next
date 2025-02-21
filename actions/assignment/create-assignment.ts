@@ -14,9 +14,9 @@ export async function createAssignment(data: z.infer<typeof CreateAssignmentSche
     try {
         await prisma.assignment.create({
             data: {
-                name: result.data.name,
-                userId: result.data.userId,
-                enterpriseId: result.data.enterpriseId,
+                userId: Number(data.userId),
+                enterpriseId: Number(data.enterpriseId),
+                rolId: Number(data.rolId)
             },
         });
 

@@ -1,11 +1,13 @@
 "use client"
-import TableAssignmentComponent from "@/components/Assignment/TableAssignmentComponent";
-import LoaderComponent from "@/components/LoaderComponent";
-import { Button } from "@/components/ui/button";
-import { useAssignmentStore } from "@/src/store";
-import { useRouter } from "next/navigation";
-import useSWR from "swr";
-import { Workflow } from 'lucide-react';
+
+import TableAssignmentComponent from "@/components/Assignment/TableAssignmentComponent"
+import LoaderComponent from "@/components/LoaderComponent"
+import { Button } from "@/components/ui/button"
+import { useAssignmentStore } from "@/src/store"
+import { Workflow } from "lucide-react"
+import { useRouter } from "next/navigation"
+import useSWR from "swr"
+
 
 export default function AssignmentPage() {
   const router = useRouter()

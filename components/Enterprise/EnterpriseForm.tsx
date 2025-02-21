@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { CreateEnterpriseSchema } from "@/src/schema";
 import { createEnterprise } from "@/actions/enterprise/create-enterprise";
 import { toast } from "react-toastify";
-import { useParams, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Enterprise } from "@prisma/client";
 import { updateEnterprise } from "@/actions/enterprise/update-enterprise";
@@ -41,7 +41,7 @@ export default function EnterpriseForm({ data }: EnterpriseFormProps) {
                 return
             }
             toast.success("Empresa Actualizada Correctamente")
-            router.push("/enterprises")
+            redirect("/enterprises")
         } else {
             const response = await createEnterprise(data);
             if (response?.errors) {
