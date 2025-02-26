@@ -16,7 +16,7 @@ async function getProductById(id: number) {
 }
 
 export default async function EditProductsPage({ params }: { params: { id: string } }) {
-    const { id } = params
+    const { id } = await params
     const enterprise = await getProductById(parseInt(id))
 
     return (

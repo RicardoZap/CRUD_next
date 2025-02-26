@@ -8,7 +8,6 @@ import { Workflow } from "lucide-react"
 import { useRouter } from "next/navigation"
 import useSWR from "swr"
 
-
 export default function AssignmentPage() {
   const router = useRouter()
   const url = '/assignment/api'

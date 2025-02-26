@@ -5,7 +5,7 @@ import { CreateRolSchema } from "@/src/schema"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
 
-export async function updateEnterprise(id: number, data: z.infer<typeof CreateRolSchema>) {
+export async function updateRol(id: number, data: z.infer<typeof CreateRolSchema>) {
     const result = CreateRolSchema.safeParse(data)
 
     if (!result.success) {

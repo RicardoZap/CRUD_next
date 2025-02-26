@@ -1,4 +1,3 @@
-"use client"
 import { BarCharComponent } from "@/components/Dashboard/BarChartComponent"
 import CardRendimiento from "@/components/Dashboard/CardRendimiento"
 import { LinealChartComponent } from "@/components/Dashboard/LinealChart"

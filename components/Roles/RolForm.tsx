@@ -9,10 +9,9 @@ import { useParams, useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Rol } from "@prisma/client";
 import { CircleArrowLeft } from 'lucide-react';
-import { updateRol } from "@/actions/assignment/update-assignment";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { createRol } from "@/actions/roles/create-rol";
 import { Input } from "../ui/input";
+import { updateRol } from "@/actions/roles/update-rol";
 
 type RolFormProps = {
     data?: Rol
